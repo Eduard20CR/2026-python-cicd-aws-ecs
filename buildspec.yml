@@ -18,7 +18,6 @@ phases:
       - echo "Image URI:" $IMAGE_URI
       - echo '[{"name":"practices-2026-python-cicd-aws-ecs-app","imageUri":"'"$IMAGE_URI:$COMMIT_HASH"'"}]' > imagedefinitions.json
 
-
   build:
     commands:
       - echo Build started on $(date)
