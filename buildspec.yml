@@ -16,7 +16,7 @@ phases:
       - echo "Commit:" $CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo "Using tag:" $COMMIT_HASH
       - echo "Image URI:" $IMAGE_URI
-      - echo '[{"name":"app","imageUri":"'"$IMAGE_URI:$COMMIT_HASH"'"}]' > imagedefinitions.json
+      - echo '[{"name":"practices-2026-python-cicd-aws-ecs-app","imageUri":"'"$IMAGE_URI:$COMMIT_HASH"'"}]' > imagedefinitions.json
 
 
   build:
