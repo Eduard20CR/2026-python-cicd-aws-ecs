@@ -16,6 +16,8 @@ phases:
       - echo "Commit:" $CODEBUILD_RESOLVED_SOURCE_VERSION
       - echo "Using tag:" $COMMIT_HASH
       - echo "Image URI:" $IMAGE_URI
+      - echo '[{"name":"app","imageUri":"'"$IMAGE_URI:$COMMIT_HASH"'"}]' > imagedefinitions.json
+
 
   build:
     commands:
@@ -29,3 +31,7 @@ phases:
       - echo Build completed on $(date)
       - echo Pushing the Docker image...
       - docker push $IMAGE_URI:$COMMIT_HASH
+  
+artifacts:
+  files:
+    - imagedefinitions.json
