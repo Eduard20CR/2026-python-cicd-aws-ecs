@@ -1,6 +1,8 @@
 from typing import Union
+import os
 
 from fastapi import FastAPI
+
 
 app = FastAPI()
 
@@ -9,10 +11,12 @@ app = FastAPI()
 async def read_root():
     return {"Hello": "World from automatic!"}
 
+@app.get("/env")
+async def read_info():
+    custom_env_var = os.getenv("CUSTOM_ENV_VAR", "Not Set")
+    custom_secret_manager_env_var = os.getenv("CUSTOM_SECRET_MANANGER_ENV_VAR", "Not Set")
+    return {"app_name": "My FastAPI Application", "version": "1.0.0", "custom_env_var": custom_env_var, "custom_secret_manager_env_var": custom_secret_manager_env_var}
 
-@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
 
 @app.get("/health")
 async def health_check():
