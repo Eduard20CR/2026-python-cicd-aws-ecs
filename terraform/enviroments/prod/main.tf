@@ -10,17 +10,17 @@ module "vpc" {
 }
 
 module "ecr_repo" {
-  source             = "../../modules/ecr"
+  source             = "../../modules/cicd/ecr"
   project_identifier = local.project_identifier
 }
 
 module "security_groups" {
-  source             = "../../modules/security_groups"
+  source             = "../../modules/app/security_groups"
   vpc_id             = module.vpc.vpc_id
   project_identifier = local.project_identifier
 }
 
 module "ecs" {
-  source             = "../../modules/ecs"
+  source             = "../../modules/app/ecs"
   project_identifier = local.project_identifier
 }
