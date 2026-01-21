@@ -1,10 +1,10 @@
 resource "aws_security_group" "alb" {
-  name        = "${var.org_name}-${var.project_name}-${var.environment}-alb-sg"
+  name        = "${var.project_identifier}-alb-sg"
   description = "Allow TLS inbound traffic and all outbound traffic"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.org_name}-${var.project_name}-${var.environment}-alb-sg"
+    Name = "${var.project_identifier}-alb-sg"
   }
 }
 
@@ -33,12 +33,12 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 
 
 resource "aws_security_group" "app" {
-  name        = "${var.org_name}-${var.project_name}-${var.environment}-app-sg"
+  name        = "${var.project_identifier}-app-sg"
   description = "Allow TLS inbound traffic and all outbound traffic"
   vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${var.org_name}-${var.project_name}-${var.environment}-app-sg"
+    Name = "${var.project_identifier}-app-sg"
   }
 }
 
