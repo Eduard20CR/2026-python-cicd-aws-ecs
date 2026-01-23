@@ -1,19 +1,19 @@
-output "cluster_id" {
-  description = "The ID of the ECS cluster"
-  value       = aws_ecs_cluster.this.id
+output "task_definition_arn" {
+  description = "ARN of the ECS task definition"
+  value       = aws_ecs_task_definition.this.arn
 }
 
-output "cluster_name" {
-  description = "The name of the ECS cluster"
-  value       = aws_ecs_cluster.this.name
+output "task_definition_revision" {
+  description = "Revision of the ECS task definition"
+  value       = aws_ecs_task_definition.this.revision
 }
 
-output "cluster_arn" {
-  description = "The ARN of the ECS cluster"
-  value       = aws_ecs_cluster.this.arn
+output "task_definition_family" {
+  description = "Family of the ECS task definition"
+  value       = aws_ecs_task_definition.this.family
 }
 
-output "capacity_providers" {
-  description = "The capacity providers associated with the cluster"
-  value       = aws_ecs_cluster_capacity_providers.this.capacity_providers
+output "container_definitions" {
+  description = "Container definitions used in the task"
+  value       = local.container_definitions
 }

@@ -20,7 +20,7 @@ module "security_groups" {
   project_identifier = local.project_identifier
 }
 
-module "ecs" {
-  source             = "../../modules/app/ecs"
+module "ecs_cluster" {
+  source             = "../../modules/app/ecs/cluster"
   project_identifier = local.project_identifier
 }
