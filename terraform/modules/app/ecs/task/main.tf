@@ -2,7 +2,7 @@ locals {
 
   container_definitions = [
     {
-      name      = "app"
+      name      = var.container_app_name
       image     = var.uri_repository
       essential = true
 

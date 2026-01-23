@@ -4,6 +4,11 @@ variable "project_identifier" {
   type        = string
 }
 
+variable "container_app_name" {
+  description = "The name of the application container"
+  type        = string
+}
+
 variable "container_port" {
   description = "The port on which the container listens"
   type        = number
