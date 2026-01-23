@@ -19,7 +19,7 @@ variable "task_definition_arn" {
   type        = string
 }
 
-variable "iam_role_arn" {
+variable "iam_service_role_arn" {
   description = "The ARN of the IAM role for the ECS service"
   type        = string
 }

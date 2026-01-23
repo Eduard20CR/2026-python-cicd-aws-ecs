@@ -16,4 +16,14 @@ variable "environment" {
   default     = "prod"
 }
 
+variable "container_port" {
+  description = "The port on the container"
+  type        = number
+  default     = 80
+}
 
+variable "container_app_name" {
+  description = "The name of the application container"
+  type        = string
+  default     = "cronos-app"
+}

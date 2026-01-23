@@ -20,7 +20,40 @@ module "security_groups" {
   project_identifier = local.project_identifier
 }
 
+module "iam_app" {
+  source             = "../../modules/app/iam/ecs_task_execution_role"
+  project_identifier = local.project_identifier
+}
+
 module "ecs_cluster" {
   source             = "../../modules/app/ecs/cluster"
   project_identifier = local.project_identifier
+}
+
+module "ecs_app_task" {
+  source             = "../../modules/app/ecs/task"
+  project_identifier = local.project_identifier
+
+  container_port     = var.container_port
+  container_app_name = var.container_app_name
+  uri_repository     = module.ecr_repo.repository_url
+  execution_role_arn = module.iam_app.ecs_task_execution_role_arn
+}
+
+module "ecs_service" {
+  source             = "../../modules/app/ecs/service"
+  project_identifier = local.project_identifier
+  cluster_id         = module.ecs_cluster.cluster_id
+  private_subnet_ids = module.vpc.private_subnet_ids
+
+  task_definition_arn = module.ecs_app_task.task_definition_arn
+  container_app_name  = var.container_app_name
+  container_port      = var.container_port
+  desired_count       = 0
+  service_sg_id       = module.security_groups.alb_security_group_id
+
+  load_balancer_listener_arn     = ""
+  load_balancer_target_group_arn = ""
+
+  iam_service_role_arn = ""
 }
