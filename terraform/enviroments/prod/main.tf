@@ -10,7 +10,7 @@ module "vpc" {
 }
 
 module "ecr_repo" {
-  source             = "../../modules/cicd/ecr"
+  source             = "../../modules/ecr"
   project_identifier = local.project_identifier
 }
 
@@ -39,7 +39,6 @@ module "elb" {
   container_port    = var.container_port
   subnet_ids        = module.vpc.public_subnet_ids
 }
-
 
 module "ecs_cluster" {
   source             = "../../modules/app/ecs/cluster"
