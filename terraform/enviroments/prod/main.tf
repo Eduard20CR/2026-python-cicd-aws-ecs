@@ -25,6 +25,17 @@ module "iam_app" {
   project_identifier = local.project_identifier
 }
 
+module "elb" {
+  source             = "../../modules/app/loadbalancer"
+  project_identifier = local.project_identifier
+  vpc_id             = module.vpc.vpc_id
+
+  security_group_id = module.security_groups.alb_security_group_id
+  container_port    = var.container_port
+  subnet_ids        = module.vpc.public_subnet_ids
+}
+
+
 module "ecs_cluster" {
   source             = "../../modules/app/ecs/cluster"
   project_identifier = local.project_identifier
@@ -52,8 +63,8 @@ module "ecs_service" {
   desired_count       = 0
   service_sg_id       = module.security_groups.alb_security_group_id
 
-  load_balancer_listener_arn     = ""
-  load_balancer_target_group_arn = ""
+  load_balancer_listener_arn     = module.elb.listener_arn
+  load_balancer_target_group_arn = module.elb.target_group_arn
 
   iam_service_role_arn = ""
 }
