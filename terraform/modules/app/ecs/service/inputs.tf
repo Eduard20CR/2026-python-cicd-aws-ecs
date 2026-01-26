@@ -24,11 +24,6 @@ variable "iam_service_role_arn" {
   type        = string
 }
 
-variable "load_balancer_listener_arn" {
-  description = "The ARN of the load balancer listener"
-  type        = string
-}
-
 variable "load_balancer_target_group_arn" {
   description = "The ARN of the load balancer target group"
   type        = string

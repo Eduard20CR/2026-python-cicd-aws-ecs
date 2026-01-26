@@ -24,6 +24,11 @@ variable "execution_role_arn" {
   type        = string
 }
 
+variable "task_role_arn" {
+  description = "The ARN of the ECS task role"
+  type        = string
+}
+
 variable "task_cpu" {
   description = "The amount of CPU to allocate to the task"
   type        = string

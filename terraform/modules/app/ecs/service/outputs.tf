@@ -22,8 +22,3 @@ output "service_desired_count" {
   description = "The desired count of tasks for the ECS service"
   value       = aws_ecs_service.this.desired_count
 }
-
-output "service_running_count" {
-  description = "The running count of tasks for the ECS service"
-  value       = aws_ecs_service.this.running_count
-}

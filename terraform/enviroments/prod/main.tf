@@ -20,8 +20,13 @@ module "security_groups" {
   project_identifier = local.project_identifier
 }
 
-module "iam_app" {
+module "iam_task_executions_app_role" {
   source             = "../../modules/app/iam/ecs_task_execution_role"
+  project_identifier = local.project_identifier
+}
+
+module "iam_app_role" {
+  source             = "../../modules/app/iam/ecs_task_role"
   project_identifier = local.project_identifier
 }
 
@@ -48,7 +53,8 @@ module "ecs_app_task" {
   container_port     = var.container_port
   container_app_name = var.container_app_name
   uri_repository     = module.ecr_repo.repository_url
-  execution_role_arn = module.iam_app.ecs_task_execution_role_arn
+  execution_role_arn = module.iam_task_executions_app_role.ecs_task_execution_role_arn
+  task_role_arn      = module.iam_app_role.task_role_arn
 }
 
 module "ecs_service" {
@@ -61,10 +67,11 @@ module "ecs_service" {
   container_app_name  = var.container_app_name
   container_port      = var.container_port
   desired_count       = 0
-  service_sg_id       = module.security_groups.alb_security_group_id
+  service_sg_id       = module.security_groups.app_security_group_id
 
-  load_balancer_listener_arn     = module.elb.listener_arn
   load_balancer_target_group_arn = module.elb.target_group_arn
 
   iam_service_role_arn = ""
+
+  depends_on = [module.elb]
 }

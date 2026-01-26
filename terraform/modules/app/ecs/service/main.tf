@@ -4,7 +4,6 @@ resource "aws_ecs_service" "this" {
   cluster                = var.cluster_id
   task_definition        = var.task_definition_arn
   desired_count          = var.desired_count
-  depends_on             = [var.load_balancer_listener_arn]
   enable_execute_command = true
 
   deployment_minimum_healthy_percent = 100
@@ -16,6 +15,19 @@ resource "aws_ecs_service" "this" {
   }
 
   health_check_grace_period_seconds = 60
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    base              = 1
+    weight            = 1
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 2
+  }
+
+  force_new_deployment = true
 
   load_balancer {
     target_group_arn = var.load_balancer_target_group_arn
