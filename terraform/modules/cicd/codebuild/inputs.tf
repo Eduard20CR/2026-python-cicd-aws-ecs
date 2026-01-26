@@ -3,3 +3,7 @@ variable "project_identifier" {
   type        = string
 }
 
+variable "codebuild_service_role_arn" {
+  description = "The ARN of the IAM role that CodeBuild will use"
+  type        = string
+}
