@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
 
   # PassRole: el más común punto de falla
   statement {
-    sid     = "PassRole"
+    sid     = "PassRoleToECSOrCodeDeploy"
     actions = ["iam:PassRole"]
     resources = [
       var.ecs_task_execution_role_arn,
@@ -70,7 +70,10 @@ data "aws_iam_policy_document" "codepipeline_policy" {
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"
-      values   = ["ecs-tasks.amazonaws.com"]
+      values = [
+        "ecs-tasks.amazonaws.com",
+        "codedeploy.amazonaws.com"
+      ]
     }
   }
 }
