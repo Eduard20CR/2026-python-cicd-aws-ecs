@@ -17,37 +17,62 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   # Artifacts en S3
   statement {
     sid       = "ArtifactsBucketList"
+    effect    = "Allow"
     actions   = ["s3:ListBucket", "s3:GetBucketLocation"]
     resources = [var.s3_artifacts_arn]
   }
 
   statement {
-    sid = "ArtifactsBucketObjects"
+    sid    = "ArtifactsBucketObjects"
+    effect = "Allow"
+    actions = [
+      "s3:GetBucketVersioning",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation"
+    ]
+    resources = [var.s3_artifacts_arn]
+  }
+
+  statement {
+    sid    = "ArtifactsBucketObjects"
+    effect = "Allow"
     actions = [
       "s3:GetObject",
       "s3:GetObjectVersion",
-      "s3:PutObject"
+      "s3:PutObject",
+      "s3:PutObjectAcl"
     ]
     resources = ["${var.s3_artifacts_arn}/*"]
   }
 
   # Invocar CodeBuild
   statement {
-    sid       = "CodeBuild"
-    actions   = ["codebuild:StartBuild", "codebuild:BatchGetBuilds"]
+    sid    = "CodeBuild"
+    effect = "Allow"
+    actions = [
+      "codebuild:BatchGetBuilds",
+      "codebuild:StartBuild",
+      "codebuild:BatchGetBuildBatches",
+      "codebuild:StartBuildBatch"
+    ]
     resources = [var.codebuild_project_arn]
   }
 
   # Si usas CodeStar Connections (GitHub)
   statement {
-    sid       = "CodeStarConnections"
-    actions   = ["codestar-connections:UseConnection"]
+    sid    = "CodeStarConnections"
+    effect = "Allow"
+    actions = [
+      "codestar-connections:UseConnection"
+
+    ]
     resources = [var.codestar_connection_arn]
   }
 
   # ECS deploy
   statement {
-    sid = "ECSRollingDeploy"
+    sid    = "ECSRollingDeploy"
+    effect = "Allow"
     actions = [
       "ecs:DescribeClusters",
       "ecs:DescribeServices",
@@ -62,6 +87,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   statement {
     sid     = "PassRoleToECSOrCodeDeploy"
     actions = ["iam:PassRole"]
+    effect  = "Allow"
     resources = [
       var.ecs_task_execution_role_arn,
       var.ecs_task_role_arn
@@ -71,8 +97,8 @@ data "aws_iam_policy_document" "codepipeline_policy" {
       test     = "StringEquals"
       variable = "iam:PassedToService"
       values = [
-        "ecs-tasks.amazonaws.com",
-        "codedeploy.amazonaws.com"
+        "ecs.amazonaws.com",
+        "ecs-tasks.amazonaws.com"
       ]
     }
   }
