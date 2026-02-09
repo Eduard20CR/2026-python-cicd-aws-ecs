@@ -9,7 +9,30 @@ resource "aws_codebuild_project" "project-using-github-app" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
+
+
+    environment_variable {
+      name  = "IMAGE_REPO_NAME"
+      value = var.image_repo_name
+    }
+
+    environment_variable {
+      name  = "AWS_ACCOUNT_ID"
+      value = var.aws_account_id
+    }
+
+    environment_variable {
+      name  = "AWS_DEFAULT_REGION"
+      value = var.aws_default_region
+    }
+
+    environment_variable {
+      name  = "TASK_DEFINITION_APP_NAME"
+      value = var.task_definition_app_name
+    }
   }
+
+
 
   source { type = "CODEPIPELINE" }
   artifacts { type = "CODEPIPELINE" }

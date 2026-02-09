@@ -1,6 +1,6 @@
 data "aws_iam_policy_document" "codebuild_assume" {
   statement {
-    actions = "sts:AssumeRole"
+    actions = ["sts:AssumeRole"]
     effect  = "Allow"
     principals {
       type        = "Service"
