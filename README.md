@@ -80,13 +80,13 @@ Returns:
 
 ```bash
 docker build -t fastapi-api .
-docker run -p 8000:8000 fastapi-api
+docker run -p 80:80 fastapi-api
 ```
 
 Access:
 
-* API: `http://localhost:8000`
-* Health check: `http://localhost:8000/health`
+* API: `http://localhost:80`
+* Health check: `http://localhost:80/health`
 
 ## 🔁 CI/CD Strategy
 
@@ -105,7 +105,7 @@ Access:
 * Zero-downtime deployments
 * One task replaced at a time
 
-## 🔐 Configuration & Secrets
+<!-- ## 🔐 Configuration & Secrets
 
 * Environment variables are defined at the ECS Task Definition level
 * Secrets are injected at runtime using:
@@ -113,7 +113,7 @@ Access:
   * AWS Secrets Manager
   * or SSM Parameter Store
 
-Secrets are **never baked into the Docker image**.
+Secrets are **never baked into the Docker image**. -->
 
 ## 💰 Cost Awareness
 
@@ -123,15 +123,15 @@ This project is designed as a **lab-friendly setup**:
 * Fargate is billed only while tasks are running
 * Resources can be destroyed or scaled to zero when not in use
 
-## 🧱 Infrastructure as Code (Planned)
+## 🧱 Infrastructure as Code
 
-The current setup is created manually for learning purposes.
-A future iteration will reproduce the entire infrastructure using **Terraform**, including:
+The infrastructure was initially created manually to fully understand how each AWS component works and how they integrate with one another.
+After validating the architecture, the entire setup was automated using Terraform, reproducing all AWS resources as code, including:
 
-* Networking
-* ECS & ECR
-* CI/CD pipeline
-* IAM roles and policies
+- Networking
+- ECS & ECR
+- CI/CD pipeline
+- IAM roles and policies
 
 ## 🎯 Learning Objectives
 

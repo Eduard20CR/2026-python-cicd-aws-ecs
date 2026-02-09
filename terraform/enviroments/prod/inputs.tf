@@ -27,3 +27,10 @@ variable "container_app_name" {
   type        = string
   default     = "cronos-app"
 }
+
+
+variable "codeconnections_arn" {
+  description = "The ARN of the CodeStar Connections connection"
+  type        = string
+  default     = "arn:aws:codeconnections:us-east-1:058264166152:connection/2269c483-60c9-415f-9bae-29a030ecb1b7"
+}
