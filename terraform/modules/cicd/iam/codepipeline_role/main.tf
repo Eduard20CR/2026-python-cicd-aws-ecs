@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
   }
 
   statement {
-    sid    = "ArtifactsBucketObjects"
+    sid    = "ArtifactsBucketObjects2"
     effect = "Allow"
     actions = [
       "s3:GetBucketVersioning",
