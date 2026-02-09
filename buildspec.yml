@@ -11,6 +11,10 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
+      - echo AWS Account ID: $AWS_ACCOUNT_ID
+      - echo AWS Region: $AWS_DEFAULT_REGION
+      - echo Image Repository Name: $IMAGE_REPO_NAME
+      - echo Task Definition App Name: $TASK_DEFINITION_APP_NAME
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-12)
       - IMAGE_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
