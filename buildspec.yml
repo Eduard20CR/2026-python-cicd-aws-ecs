@@ -27,7 +27,8 @@ phases:
     commands:
       - echo Build started on $(date)
       - echo Building the Docker image...
-      - docker buildx build --platform linux/amd64 -t $IMAGE_REPO_NAME:$COMMIT_HASH --load .
+      # - docker buildx build --platform linux/amd64 -t $IMAGE_REPO_NAME:$COMMIT_HASH --load .
+      - docker build -t $IMAGE_REPO_NAME:$COMMIT_HASH .
       - docker tag $IMAGE_REPO_NAME:$COMMIT_HASH $IMAGE_URI:$COMMIT_HASH
 
   post_build:
