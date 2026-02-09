@@ -102,6 +102,17 @@ data "aws_iam_policy_document" "codepipeline_policy" {
       ]
     }
   }
+
+  statement {
+    sid    = "ECSTagging"
+    effect = "Allow"
+    actions = [
+      "ecs:TagResource",
+      "ecs:UntagResource",
+      "ecs:ListTagsForResource"
+    ]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "codepipeline" {
