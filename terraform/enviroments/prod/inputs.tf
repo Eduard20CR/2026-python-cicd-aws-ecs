@@ -19,7 +19,7 @@ variable "environment" {
 variable "container_port" {
   description = "The port on the container"
   type        = number
-  default     = 80
+  default     = 8000
 }
 
 variable "container_app_name" {
