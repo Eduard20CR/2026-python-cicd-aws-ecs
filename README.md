@@ -1,92 +1,63 @@
-# 🚀 CI/CD Pipeline for a Python API on AWS (ECS Fargate)
+# 🚀 End-to-End CI/CD Pipeline for a Python API on AWS (ECS Fargate)
 
-This project demonstrates a **production-style CI/CD pipeline** for a Python API using **AWS managed services**, following real world DevOps best practices.
+This project showcases a **production-style, end-to-end CI/CD pipeline** for a containerized Python API running on **AWS ECS Fargate**, with **fully automated infrastructure and deployments using Terraform**.
 
-The goal is to automatically build, version, and deploy a containerized Python API to **ECS Fargate** whenever new code is pushed to GitHub.
+The objective is to provision all required AWS resources as code and enable **automatic, zero-downtime deployments** whenever new code is pushed or merged into the `main` branch.
 
-## 🧠 What This Project Covers
+## 🧠 What This Project Demonstrates
 
-* Containerized Python API (FastAPI)
-* Automated Docker image builds
-* Image versioning using **Git commit SHA**
-* Secure image storage in Amazon ECR
-* Automated deployments to ECS Fargate
-* Infrastructure designed with scalability and cost control in mind
+* End-to-end **Infrastructure as Code (IaC)** using Terraform
+* A complete **CI/CD pipeline** using AWS-native services
+* Automated Docker builds and deployments
+* Real-world debugging, observability, and IAM troubleshooting
+* Production-style ECS deployment patterns
+
+It reflects real challenges encountered when building and operating cloud infrastructure.
 
 ## 🛠 Tech Stack
 
 * **Python** (FastAPI)
 * **Docker**
 * **GitHub**
+* **Terraform**
 * **AWS CodePipeline**
 * **AWS CodeBuild**
 * **Amazon ECR**
 * **Amazon ECS (Fargate)**
 * **Application Load Balancer**
-* **CloudWatch Logs**
-* *(Terraform planned for infrastructure as code)*
+* **Amazon CloudWatch (Logs & Metrics)**
+* **AWS CloudTrail**
 
 ## 📐 Architecture Overview
 
-**Flow:**
+### High-level Flow
 
-1. Code is pushed to `main` on GitHub
-2. CodePipeline is triggered
-3. CodeBuild:
+1. Code is pushed or merged into `main` on GitHub
+2. **CodePipeline** is automatically triggered
+3. **CodeBuild**:
 
-   * Builds Docker image
-   * Tags image with Git commit SHA
-   * Pushes image to ECR
-4. ECS Service:
+   * Builds the Docker image
+   * Tags the image using the Git commit SHA
+   * Pushes the image to **Amazon ECR**
+4. **ECS Service (Fargate)**:
 
-   * Pulls new image
-   * Performs rolling update on Fargate
-5. Application is served via an Application Load Balancer
+   * Pulls the new image
+   * Performs a **rolling deployment**
+5. Traffic is routed through an **Application Load Balancer**
+6. Logs and events are monitored using **CloudWatch** and **CloudTrail**
 
-## 📁 Project Structure
+## 🧱 Infrastructure as Code (Terraform)
 
-```text
-.
-├── app/
-│   ├── main.py
-│   └── ...
-├── tests/
-│   └── ...
-├── Dockerfile
-├── requirements.txt
-├── buildspec.yml
-└── README.md
-```
+All AWS resources are fully defined and managed using **Terraform**, including:
 
-## 🩺 Health Check
+* VPC and networking components
+* ECS Cluster, Task Definitions, and Services
+* Application Load Balancer and Target Groups
+* ECR repository
+* CodePipeline and CodeBuild
+* IAM roles and policies
 
-The API exposes a health endpoint used by ECS and the Load Balancer:
-
-```http
-GET /health
-```
-
-Returns:
-
-```json
-{
-  "status": "ok"
-}
-```
-
-## 🧪 Local Development
-
-### Build and run locally
-
-```bash
-docker build -t fastapi-api .
-docker run -p 80:80 fastapi-api
-```
-
-Access:
-
-* API: `http://localhost:80`
-* Health check: `http://localhost:80/health`
+This allows the entire environment to be **reproducible, versioned, and auditable**.
 
 ## 🔁 CI/CD Strategy
 
@@ -97,49 +68,95 @@ Access:
 
   * Full traceability
   * Easy rollbacks
-  * Reproducible deployments
+  * Immutable deployments
 
 ### Deployment Type
 
 * ECS **rolling updates**
-* Zero-downtime deployments
-* One task replaced at a time
+* Zero downtime
+* Controlled task replacement managed by ECS
 
-<!-- ## 🔐 Configuration & Secrets
+## 🔍 Observability & Debugging
 
-* Environment variables are defined at the ECS Task Definition level
-* Secrets are injected at runtime using:
+This project required extensive troubleshooting beyond the “happy path”:
 
-  * AWS Secrets Manager
-  * or SSM Parameter Store
+* **CloudWatch Logs** were used to diagnose runtime issues when the application failed to start or behaved unexpectedly.
+* **CloudTrail** was critical for debugging **IAM permission issues**, allowing inspection of failed API calls and denied actions.
+* Load Balancer health checks were used to validate application availability during deployments.
 
-Secrets are **never baked into the Docker image**. -->
+These experiences helped solidify a practical understanding of how AWS services behave in real environments.
+
+## 🩺 Health Check
+
+The API exposes a health endpoint used by ECS and the ALB:
+
+```http
+GET /health
+```
+
+Response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+## 📁 Project Structure
+
+```text
+.
+├── app/
+│   ├── main.py
+│   └── ...
+├── Dockerfile
+├── requirements.txt
+├── buildspec.yml
+├── terraform/
+│   └── modules & environments
+└── README.md
+```
+
+## 🧪 Local Development
+
+### Build and run locally
+
+```bash
+docker build -t fastapi-api .
+docker run -p 8000:8000 fastapi-api
+```
+
+Access:
+
+* API: `http://localhost:8000`
+* Health check: `http://localhost:8000/health`
 
 ## 💰 Cost Awareness
 
-This project is designed as a **lab-friendly setup**:
+This project was designed with **cost control in mind**:
 
-* No cost when ECS services are stopped
-* Fargate is billed only while tasks are running
-* Resources can be destroyed or scaled to zero when not in use
+* Fargate tasks are billed only while running
+* Resources can be scaled down or destroyed via Terraform
+* Suitable for lab, learning, and portfolio usage
 
-## 🧱 Infrastructure as Code
+## 🎯 Learning Outcomes
 
-The infrastructure was initially created manually to fully understand how each AWS component works and how they integrate with one another.
-After validating the architecture, the entire setup was automated using Terraform, reproducing all AWS resources as code, including:
+* Deep understanding of **ECS deployment mechanics**
+* Practical experience with **AWS CI/CD pipelines**
+* Real-world IAM and observability troubleshooting
+* Strong grasp of **production-ready cloud workflows**
+* Confidence designing, deploying, and debugging AWS systems
 
-- Networking
-- ECS & ECR
-- CI/CD pipeline
-- IAM roles and policies
+## 🚧 Future Improvements
 
-## 🎯 Learning Objectives
+Possible next iterations include:
 
-* Understand real-world CI/CD pipelines on AWS
-* Learn how ECS deployments work under the hood
-* Apply DevOps best practices (immutability, traceability, automation)
-* Prepare for production-grade cloud roles
+* Blue/Green deployments
+* Automated testing in the pipeline
+* Enhanced security hardening
+* Cost optimization strategies
+* Metrics and alerting
 
 ## 📄 License
 
-This project is for educational and portfolio purposes.
+This project is intended for **educational and portfolio purposes**.
