@@ -52,6 +52,7 @@ module "ecs_service" {
   project_identifier = local.project_identifier
   cluster_id         = module.ecs_cluster.cluster_id
   private_subnet_ids = module.vpc.private_subnet_ids
+  public_subnet_ids  = module.vpc.public_subnet_ids
 
   task_definition_arn = module.ecs_app_task.task_definition_arn
   container_app_name  = var.container_app_name

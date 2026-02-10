@@ -25,7 +25,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ipv4" {
 }
 
 
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
+resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4_alb" {
   security_group_id = aws_security_group.alb.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
@@ -58,4 +58,10 @@ resource "aws_vpc_security_group_ingress_rule" "app_from_alb_https" {
   ip_protocol = "tcp"
   from_port   = 443
   to_port     = 443
+}
+
+resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4_app" {
+  security_group_id = aws_security_group.app.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
 }
