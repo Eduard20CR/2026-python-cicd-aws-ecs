@@ -13,9 +13,8 @@ async def read_root():
 
 @app.get("/env")
 async def read_info():
-    custom_env_var = os.getenv("CUSTOM_ENV_VAR", "Not Set")
-    custom_secret_manager_env_var = os.getenv("CUSTOM_SECRET_MANANGER_ENV_VAR", "Not Set")
-    return {"app_name": "My FastAPI Application", "version": "1.0.0", "custom_env_var": custom_env_var, "custom_secret_manager_env_var": custom_secret_manager_env_var}
+    custom_env_var = os.getenv("ENVIRONMENT", "Not Set")
+    return {"app_name": "My FastAPI Application", "version": "1.0.0", "custom_env_var": custom_env_var}
 
 
 @app.get("/health")
